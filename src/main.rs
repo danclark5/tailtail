@@ -37,26 +37,19 @@ fn main() {
 }
 
 fn run(config: Config) {
-    let contents = fs::read_to_string(config.file_path)
+    let mut contents = fs::read_to_string(config.file_path)
         .expect("Should have been able to read the file");
 
     let mut line_break_count = 0;
-    let mut content_chars = contents.chars();
-    let mut reversed_output_string = String::new();
-    while let Some(ch) = content_chars.next_back() {
+    let mut output_string = String::new();
+    while let Some(ch) = contents.pop() {
         if ch == '\n' {
             line_break_count += 1;
         }
         if line_break_count > config.number_of_lines {
             break;
         }
-        reversed_output_string.push(ch);
-    }
-
-    let mut reversed_output_chars = reversed_output_string.chars();
-    let mut output_string = String::new();
-    while let Some(ch) = reversed_output_chars.next_back() {
-        output_string.push(ch);
+        output_string.insert(0, ch);
     }
 
     println!("{output_string}");
