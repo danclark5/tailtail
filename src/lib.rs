@@ -12,10 +12,7 @@ impl Config {
         }
         let file_path = args[1].clone();
         let number_of_lines: i32 = if args.len() == 3 {
-            match args[2].clone().parse() {
-                Ok(num) => num,
-                Err(_) => 10,
-            }
+            args[2].clone().parse().unwrap_or(10)
         } else {
             10
         };
