@@ -6,15 +6,16 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn build(args: &[String]) -> Result<Config, &'static str> {
-        if args.len() < 2 {
-            return Err("not enough arguments");
-        }
-        let file_path = args[1].clone();
-        let number_of_lines: i32 = if args.len() == 3 {
-            args[2].clone().parse().unwrap_or(10)
-        } else {
-            10
+    pub fn build(mut args: impl Iterator<Item = String>,) -> Result<Config, &'static str> {
+        args.next();
+        let file_path = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't get a file path"),
+        };
+
+        let number_of_lines: i32 = match args.next() {
+            Some(arg) => arg.parse().unwrap_or(10),
+            None => 10
         };
 
         Ok(Config {file_path, number_of_lines})
